@@ -10,10 +10,6 @@ def getTweets(query, maxTweets):
 
     Returns a DataFrame that is in reverse order of date. Writes df to tweets.csv file.
     """
-    print("----------------------------------")
-    print("      getTweets.py started")
-    print("----------------------------------")
-    
     tweets = []
 
     for tweet in sntwitter.TwitterSearchScraper(query).get_items():
@@ -29,8 +25,4 @@ def getTweets(query, maxTweets):
     # to save to csv
     df.to_csv("tweets.csv")
 
-    print(f"Number of tweets collected: {len(df)}")
-    print("----------------------------------")
-    print("      getTweets.py finished")
-    print("----------------------------------")
     return df
