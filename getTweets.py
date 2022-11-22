@@ -1,20 +1,38 @@
+# © Roel Duijsings
+
 import snscrape.modules.twitter as sntwitter
 import pandas as pd
 
-query = "(Hebe OR hebe) lang:nl until:2022-10-20 since:2022-10-17"
-tweets = []
-limit = 10
 
-for tweet in sntwitter.TwitterSearchScraper(query).get_items():
-    # print(vars(tweet))
-    # break
-    if len(tweets) == limit:
-        break
-    else:
-        tweets.append([tweet.date, tweet.username, tweet.content])
+def getTweets():
+    """
+    Gather tweets from Twitter API. Query and max nr of tweets are set here. 
+    
+    Returns a DataFrame that is in reverse order of date. Writes df to tweets.csv file.
+    """
+    print("----------------------------------")
+    print("      getTweets.py started")
+    print("----------------------------------")
 
-df = pd.DataFrame(tweets, columns=["Date", "User", "Tweet"])
-print(df)
+    query = "(Hebe OR hebe) lang:nl until:2022-10-21 since:2022-10-17"
+    tweets = []
+    limit = 10
 
-# to save to csv
-# df.to_csv('tweets.csv')
+    for tweet in sntwitter.TwitterSearchScraper(query).get_items():
+        if len(tweets) == limit:
+            break
+        else:
+            tweets.append([tweet.date, tweet.user.username,
+                          tweet.content, tweet.url])
+
+    df = pd.DataFrame(tweets, columns=["Date", "Username", "Tweet", "Url"])
+    df.index.name = "id"
+
+    # to save to csv
+    df.to_csv("tweets.csv")
+
+    print(f"Number of tweets collected: {len(df)}")
+    print("----------------------------------")
+    print("      getTweets.py finished")
+    print("----------------------------------")
+    return df
