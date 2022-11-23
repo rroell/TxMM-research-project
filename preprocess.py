@@ -5,8 +5,21 @@ import pandas as pd
 
 
 def preprocess(query, maxTweets):
+    """
+    Preprocess the tweets: 
+    - collect them from Twitter API, 
+    - replace username and URL by placeholders, 
+    - sort in chronological order,
+    - save to tweets.csv.
+    """
     df = getTweets(query, maxTweets)
-    df['Text'] = df["Text"].map(replacePlaceholders)
+    df['Text'] = df["Raw_text"].map(replacePlaceholders)
+
+    # Sort dates in chronological order
+    df.sort_values(by='Date', inplace=True)
+
+    # Save to csv
+    df.to_csv("tweets.csv")
     return df
 
 
@@ -25,11 +38,8 @@ def getTweets(query, maxTweets):
             tweets.append([tweet.date, tweet.user.username,
                           tweet.content, tweet.url])
 
-    df = pd.DataFrame(tweets, columns=["Date", "Username", "Text", "Url"])
+    df = pd.DataFrame(tweets, columns=["Date", "Username", "Raw_text", "Url"])
     df.index.name = "id"
-
-    # to save to csv
-    df.to_csv("tweets.csv")
 
     return df
 
