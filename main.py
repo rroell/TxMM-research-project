@@ -1,5 +1,5 @@
 # © Roel Duijsings
-from getTweets import getTweets
+from preprocess import getTweets
 
 query = "(Hebe OR hebe) lang:nl until:2022-10-21 since:2022-10-17"
 maxTweets = 10
