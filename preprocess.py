@@ -7,18 +7,18 @@ import pandas as pd
 def preprocess(query, maxTweets):
     """
     Preprocess the tweets:
-    - collect them from Twitter API,
-    - replace username and URL by placeholders,
-    - sort in chronological order,
-    - save to tweets.csv.
-    
+    - collects them from Twitter API,
+    - replaces username and URL by placeholders,
+    - sorts in chronological order,
+    - saves to tweets.csv.
+
     Returns a DataFrame["Date", "Username", "Raw_text", "Url","Text"]
     """
     df = getTweets(query, maxTweets)
     df["Text"] = df["Raw_text"].map(replacePlaceholders)
 
     # Sort dates in chronological order
-    df.sort_values(by="Date", inplace=True)
+    # df.sort_values(by="Date", inplace=True)
 
     # Save to csv
     df.to_csv("tweets.csv")
@@ -51,7 +51,9 @@ def replacePlaceholders(tweet):
     """
     new_tweet = []
     for word in tweet.split(" "):
-        word = "@USER" if word.startswith("@") and len(word) > 1 else word
-        word = "HTTP" if word.startswith("http") else word
+        if word.startswith("@") and len(word) > 1:
+            word = "@USER"
+        elif word.startswith("http"):
+            word = "HTTP"
         new_tweet.append(word)
     return " ".join(new_tweet)
