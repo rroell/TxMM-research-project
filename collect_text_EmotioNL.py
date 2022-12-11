@@ -3,6 +3,7 @@ import pandas as pd
 from preprocess import replacePlaceholders
 
 LIMIT = 10
+df = []
 # TODO: rewrite emotionNL database to readable
 with open("EmotioNL_tweets.txt") as f:
     next(f)  # skip header
