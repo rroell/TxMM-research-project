@@ -9,32 +9,25 @@ def preprocess(query, maxTweets):
     Preprocess the tweets:
     - collects them from Twitter API,
     - replaces username and URL by placeholders,
-    - sorts in chronological order,
-    - saves to tweets.csv.
 
     Returns a DataFrame["Date", "Username", "Raw_text", "Url","Text"]
     """
     df = getTweets(query, maxTweets)
     df["Text"] = df["Raw_text"].map(replacePlaceholders)
 
-    # Sort dates in chronological order
-    # df.sort_values(by="Date", inplace=True)
-
-    # Save to csv
-    df.to_csv("tweets.csv")
     return df
 
 
 def getTweets(query, maxTweets):
     """
-    Gather tweets from Twitter API. Query and max nr of tweets are set here.
+    Gather tweets from Twitter API. Query and maxTweets are used here.
 
-    Returns a DataFrame that is in reverse order of date. Writes df to tweets.csv file.
+    Returns a DataFrame that is in reversed chronological order.
     """
     tweets = []
 
     for tweet in sntwitter.TwitterSearchScraper(query).get_items():
-        if len(tweets) == maxTweets:
+        if len(tweets) >= maxTweets:
             break
         else:
             tweets.append([tweet.date, tweet.user.username, tweet.content, tweet.url])

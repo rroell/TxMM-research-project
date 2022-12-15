@@ -13,12 +13,12 @@ import time
 start_time = time.time()
 
 # PARAMETERS
-query = "(Hebe OR hebe) lang:nl until:2022-10-21 since:2022-10-17"
-maxTweets = 10000
+query = "hebe lang:nl until:2022-10-21 since:2022-10-17"
+maxTweets = 100000
 
 # PREPROCESS DATA
 data = preprocess(query, maxTweets)
-print(data.iloc[-1])
+# print(data.iloc[-1])
 # MODEL AND TOKENIZER
 # tokenizer = RobertaTokenizer.from_pretrained("pdelobelle/robbert-v2-dutch-base")
 
